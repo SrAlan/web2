@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Test Político Paraguay</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #2b2b45);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 600px;
+    background: #2f2f4f;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.progress {
+    height: 8px;
+    background: #444;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #6c63ff;
+    width: 0%;
+}
+
+.pregunta {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.opcion {
+    background: #3a3a5a;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.opcion:hover {
+    background: #6c63ff;
+}
+
+.resultado {
+    text-align: center;
+}
+
+.resultado h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.resultado p {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+img {
+    width: 200px;
+    margin-top: 15px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="progress">
+    <div class="progress-bar" id="barra"></div>
+</div>
+
+<div id="contenido"></div>
+
+</div>
+
+<script>
+
+const preguntas = [
+{texto:"Paraguay debería aumentar impuestos a los sectores con mayores ingresos.",dir:-1},
+{texto:"Mantener impuestos bajos es clave para atraer inversión y empleo.",dir:1},
+{texto:"El Estado debe intervenir activamente para reducir desigualdad.",dir:-1},
+{texto:"El crecimiento económico debe priorizarse antes que la redistribución.",dir:1},
+{texto:"Grandes productores agrícolas deberían aportar más al Estado.",dir:-1},
+{texto:"El mercado debería definir precios y salarios con mínima intervención estatal.",dir:1},
+{texto:"Los subsidios sociales son necesarios para equilibrar desigualdades.",dir:-1},
+{texto:"Las empresas deben tener libertad para operar con mínima regulación económica.",dir:1},
+{texto:"El Estado debería expandir su rol en servicios públicos.",dir:-1},
+{texto:"El problema es la mala gestión del Estado.",dir:-1},
+{texto:"Es mejor un Estado más pequeño.",dir:1},
+{texto:"Servicios públicos deberían privatizarse.",dir:1},
+{texto:"El Estado debe regular sectores estratégicos.",dir:-1},
+{texto:"Las alianzas público-privadas son mejores.",dir:1},
+{texto:"La descentralización mejora la gestión.",dir:1},
+{texto:"Empresas estatales son necesarias.",dir:-1},
+{texto:"El Estado debe controlar tierras.",dir:-1},
+{texto:"Reducir burocracia es clave.",dir:1},
+{texto:"La reforma agraria sigue siendo necesaria.",dir:-1},
+{texto:"La propiedad privada debe protegerse.",dir:1},
+{texto:"El Estado debe controlar la deforestación.",dir:-1},
+{texto:"El agronegocio no debe limitarse.",dir:1},
+{texto:"Indígenas deben tener prioridad.",dir:-1},
+{texto:"Industrialización con apoyo estatal.",dir:-1},
+{texto:"Inversión extranjera libre.",dir:1},
+{texto:"El clientelismo es el problema.",dir:0},
+{texto:"Se necesita reforma judicial.",dir:-1},
+{texto:"El orden institucional es prioridad.",dir:-1},
+{texto:"Más participación ciudadana.",dir:1},
+{texto:"Financiamiento político regulado.",dir:-1},
+{texto:"ONGs deben operar libremente.",dir:1},
+{texto:"Educación sexual en escuelas.",dir:1},
+{texto:"Familias deciden educación moral.",dir:-1},
+{texto:"Estado más laico.",dir:1},
+{texto:"Religión en vida pública.",dir:-1},
+{texto:"Diversidad debe protegerse.",dir:1},
+{texto:"Tradiciones deben preservarse.",dir:-1},
+{texto:"Rol tradicional de familia.",dir:-1},
+{texto:"Penas más duras.",dir:-1},
+{texto:"Políticas sociales contra inseguridad.",dir:-1}
+];
+
+const respuestas = [
+{texto:"Muy en desacuerdo", valor:-2},
+{texto:"En desacuerdo", valor:-1},
+{texto:"Neutral / depende", valor:0},
+{texto:"De acuerdo", valor:1},
+{texto:"Muy de acuerdo", valor:2}
+];
+
+let actual = 0;
+let total = 0;
+
+function mostrarPregunta() {
+    let p = preguntas[actual];
+
+    document.getElementById("barra").style.width =
+        ((actual / preguntas.length) * 100) + "%";
+
+    let html = `<div class="pregunta">${actual+1}. ${p.texto}</div>`;
+
+    respuestas.forEach(r => {
+        html += `<div class="opcion" onclick="responder(${r.valor})">${r.texto}</div>`;
+    });
+
+    document.getElementById("contenido").innerHTML = html;
+}
+
+function responder(valor) {
+    total += valor * preguntas[actual].dir;
+    actual++;
+
+    if (actual < preguntas.length) {
+        mostrarPregunta();
+    } else {
+        animarResultado();
+    }
+}
+
+// 🎰 animación tipo ruleta
+function animarResultado() {
+
+    let imagenes = [
+        "izquierda1.png","izquierda2.png","izquierda3.png",
+        "0centro.png",
+        "derecha1.png","derecha2.png","derecha3.png"
+    ];
+
+    let i = 0;
+
+    document.getElementById("contenido").innerHTML = `
+        <div class="resultado">
+            <h2>Calculando resultado...</h2>
+            <img id="imgResultado" src="0centro.png">
+        </div>
+    `;
+
+    let intervalo = setInterval(() => {
+        document.getElementById("imgResultado").src =
+            imagenes[Math.floor(Math.random()*imagenes.length)];
+        i++;
+    }, 100);
+
+    setTimeout(() => {
+        clearInterval(intervalo);
+        mostrarResultado();
+    }, 2000);
+}
+
+function mostrarResultado() {
+
+    let img = "";
+    let titulo = "";
+    let desc = "";
+
+    if (total <= -20) {
+        img = "izquierda3.png";
+        titulo = "Izquierda Radical";
+        desc = "Fuerte enfoque en igualdad, intervención estatal y justicia social.";
+    }
+    else if (total <= -10) {
+        img = "izquierda2.png";
+        titulo = "Izquierda Moderada";
+        desc = "Apoyo a políticas sociales con equilibrio económico.";
+    }
+    else if (total < 0) {
+        img = "izquierda1.png";
+        titulo = "Centro-Izquierda";
+        desc = "Tendencia social con apertura al mercado.";
+    }
+    else if (total == 0) {
+        img = "0centro.png";
+        titulo = "Centro";
+        desc = "Equilibrio entre Estado y mercado.";
+    }
+    else if (total < 10) {
+        img = "derecha1.png";
+        titulo = "Centro-Derecha";
+        desc = "Prioridad al mercado con cierta regulación.";
+    }
+    else if (total < 20) {
+        img = "derecha2.png";
+        titulo = "Derecha Moderada";
+        desc = "Énfasis en libre mercado y menor intervención estatal.";
+    }
+    else {
+        img = "derecha3.png";
+        titulo = "Derecha Radical";
+        desc = "Máxima libertad económica y Estado mínimo.";
+    }
+
+    document.getElementById("contenido").innerHTML = `
+        <div class="resultado">
+            <h2>${titulo}</h2>
+            <p>${desc}</p>
+            <img src="${img}">
+            <p>Puntaje: ${total}</p>
+        </div>
+    `;
+
+    document.getElementById("barra").style.width = "100%";
+}
+
+mostrarPregunta();
+
+</script>
+
+</body>
+</html>
