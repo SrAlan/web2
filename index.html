@@ -2,262 +2,616 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Test Político Paraguay</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRIKE — Streetwear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #1e1e2f, #2b2b45);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e0e0e;
+  --bg2:#161616;
+  --bg3:#1f1f1f;
+  --text:#f0ede8;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#e8ff00;
+  --accent2:#ff3c3c;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;min-height:100vh}
+
+/* NAV */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;background:var(--bg);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+}
+.brand{font-family:var(--font-display);font-size:28px;letter-spacing:4px;color:var(--text)}
+.nav-r{display:flex;gap:20px;align-items:center}
+.nav-r i{font-size:20px;cursor:pointer;color:var(--muted);transition:color .2s}
+.nav-r i:hover{color:var(--text)}
+.cart-wrap{position:relative}
+.cart-badge{
+  position:absolute;top:-7px;right:-7px;
+  background:var(--accent);color:#111;
+  font-size:9px;font-weight:700;
+  width:17px;height:17px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-body);
 }
 
-.container {
-    width: 600px;
-    background: #2f2f4f;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+/* HERO */
+.hero{
+  padding:60px 32px 40px;
+  display:flex;flex-direction:column;align-items:flex-start;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'STRIKE';
+  font-family:var(--font-display);
+  font-size:clamp(80px,18vw,220px);
+  color:rgba(255,255,255,.03);
+  position:absolute;right:-20px;bottom:-30px;
+  line-height:1;pointer-events:none;letter-spacing:-4px;
+}
+.hero-tag{
+  font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:14px;
+}
+.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(42px,8vw,100px);
+  letter-spacing:2px;line-height:.95;
+  color:var(--text);margin-bottom:18px;
+}
+.hero-sub{font-size:13px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+
+/* FILTER */
+.filter-bar{
+  display:flex;gap:8px;padding:20px 32px;
+  overflow-x:auto;scrollbar-width:none;
+  border-bottom:1px solid var(--border);
+}
+.filter-bar::-webkit-scrollbar{display:none}
+.fbtn{
+  padding:6px 18px;border:1px solid var(--border);
+  border-radius:2px;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;cursor:pointer;
+  background:transparent;color:var(--muted);
+  white-space:nowrap;transition:all .15s;
+  font-family:var(--font-body);
+}
+.fbtn:hover{border-color:var(--text);color:var(--text)}
+.fbtn.active{background:var(--accent);color:#111;border-color:var(--accent);font-weight:500}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1px;background:var(--border);
+}
+.card{
+  background:var(--bg);cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:background .2s;
+}
+.card:hover{background:var(--bg2)}
+.card-img-wrap{
+  aspect-ratio:1/1;overflow:hidden;
+  position:relative;background:var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+}
+.card-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform .5s ease;
+  display:block;
+}
+.card-img-wrap .fallback{
+  display:none;
+  font-size:64px;
+  color:var(--border);
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.card-img-wrap .fallback span{
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--muted);
+}
+.card:hover .card-img{transform:scale(1.06)}
+.card-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 50%);
+  opacity:0;transition:opacity .25s;
+  display:flex;align-items:flex-end;padding:16px;
+}
+.card:hover .card-overlay{opacity:1}
+.quick-view{
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  background:var(--accent);color:#111;
+  border:none;padding:8px 16px;cursor:pointer;
+  font-weight:700;font-family:var(--font-body);
+}
+.card-info{padding:14px 16px 16px}
+.card-brand{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.card-name{font-size:14px;font-weight:500;margin-bottom:8px;line-height:1.3}
+.card-price{font-size:15px;font-weight:500;color:var(--text)}
+.card-price s{font-size:12px;color:var(--muted);margin-left:8px;font-weight:300}
+.badge-new{
+  position:absolute;top:12px;left:12px;
+  background:var(--accent);color:#111;
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  padding:4px 8px;font-weight:700;
+}
+.badge-ltd{
+  position:absolute;top:12px;left:12px;
+  background:var(--accent2);color:#fff;
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  padding:4px 8px;font-weight:700;
+}
+.badge-img{
+  position:absolute;top:12px;right:12px;
+  background:rgba(0,0,0,.6);color:var(--muted);
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 7px;
 }
 
-.progress {
-    height: 8px;
-    background: #444;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
+/* MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.85);z-index:100;
+  overflow-y:auto;
+}
+.modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;padding:40px 20px}
+.modal{
+  background:var(--bg2);width:100%;max-width:920px;
+  display:grid;grid-template-columns:1fr 1fr;
+  position:relative;border:1px solid var(--border);
+}
+.modal-close{
+  position:absolute;top:14px;right:14px;
+  background:none;border:none;cursor:pointer;
+  font-size:20px;color:var(--muted);z-index:2;
+  transition:color .15s;
+}
+.modal-close:hover{color:var(--text)}
+.modal-img-wrap{
+  aspect-ratio:1/1;overflow:hidden;
+  background:var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.modal-img-el{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.modal-img-fallback{
+  display:none;flex-direction:column;
+  align-items:center;gap:12px;color:var(--border);
+}
+.modal-img-fallback i{font-size:80px}
+.modal-img-fallback span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.modal-content{padding:32px 28px;overflow-y:auto;max-height:90vh}
+.modal-label{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.modal-name{font-family:var(--font-display);font-size:36px;letter-spacing:1px;margin-bottom:10px;line-height:1.1;color:var(--text)}
+.modal-price{font-size:22px;font-weight:500;margin-bottom:6px;color:var(--text)}
+.modal-price s{font-size:15px;color:var(--muted);margin-left:8px;font-weight:300}
+.modal-rating{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:22px}
+.stars{color:#f59e0b;font-size:13px}
+.sec-label{
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;margin-top:20px;
+  border-top:1px solid var(--border);padding-top:16px;
+}
+.color-opts{display:flex;gap:10px;flex-wrap:wrap}
+.cdot{
+  width:28px;height:28px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:border .15s;
+  outline:2px solid transparent;outline-offset:3px;
+}
+.cdot.sel{outline:2px solid var(--accent)}
+.size-opts{display:flex;gap:8px;flex-wrap:wrap}
+.sbtn{
+  min-width:46px;padding:9px 12px;
+  border:1px solid var(--border);
+  font-size:11px;letter-spacing:2px;cursor:pointer;
+  background:transparent;color:var(--muted);
+  transition:all .12s;font-family:var(--font-body);text-align:center;
+}
+.sbtn:hover{border-color:var(--text);color:var(--text)}
+.sbtn.sel{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700}
+.qty-row{display:flex;align-items:center;gap:14px;margin-top:18px}
+.qty-lbl{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
+.qty-btn{
+  width:32px;height:32px;border:1px solid var(--border);
+  background:none;cursor:pointer;font-size:18px;
+  color:var(--text);display:flex;align-items:center;
+  justify-content:center;transition:border-color .15s;
+}
+.qty-btn:hover{border-color:var(--text)}
+.qty-val{font-size:15px;font-weight:500;min-width:20px;text-align:center;color:var(--text)}
+.modal-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-top:18px}
+.btn-primary{
+  width:100%;padding:15px;
+  background:var(--accent);color:#111;
+  border:none;font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  cursor:pointer;margin-top:22px;font-weight:700;
+  font-family:var(--font-body);transition:opacity .15s;
+}
+.btn-primary:hover{opacity:.85}
+.btn-secondary{
+  width:100%;padding:14px;
+  background:none;border:1px solid var(--border);
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  cursor:pointer;margin-top:10px;color:var(--muted);
+  font-family:var(--font-body);transition:all .15s;
+}
+.btn-secondary:hover{border-color:var(--text);color:var(--text)}
+.no-products{
+  grid-column:1/-1;
+  padding:80px 32px;text-align:center;
+  color:var(--muted);letter-spacing:3px;
+  text-transform:uppercase;font-size:12px;
 }
 
-.progress-bar {
-    height: 100%;
-    background: #6c63ff;
-    width: 0%;
+/* TOAST */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#111;
+  padding:12px 24px;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;font-weight:700;
+  z-index:200;opacity:0;transition:opacity .25s;
+  pointer-events:none;font-family:var(--font-body);
+}
+.toast.show{opacity:1}
+
+/* FOOTER */
+footer{
+  text-align:center;padding:28px 32px;
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--muted);border-top:1px solid var(--border);
 }
 
-.pregunta {
-    font-size: 20px;
-    margin-bottom: 20px;
-}
-
-.opcion {
-    background: #3a3a5a;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.opcion:hover {
-    background: #6c63ff;
-}
-
-.resultado {
-    text-align: center;
-}
-
-.resultado h2 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-.resultado p {
-    font-size: 18px;
-    opacity: 0.8;
-}
-
-img {
-    width: 200px;
-    margin-top: 15px;
+@media(max-width:640px){
+  .modal{grid-template-columns:1fr}
+  .modal-img-wrap{aspect-ratio:1/1}
+  .modal-content{max-height:none}
+  .hero-title{font-size:52px}
+  nav{padding:14px 18px}
+  .filter-bar{padding:14px 18px}
+  .grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
-
 </head>
 <body>
 
-<div class="container">
+<nav>
+  <div class="brand">STRIKE</div>
+  <div class="nav-r">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <i class="ti ti-heart" aria-hidden="true"></i>
+    <div class="cart-wrap">
+      <i class="ti ti-shopping-bag" aria-hidden="true" id="cart-icon"></i>
+      <div class="cart-badge" id="cart-count">0</div>
+    </div>
+  </div>
+</nav>
 
-<div class="progress">
-    <div class="progress-bar" id="barra"></div>
+<div class="hero">
+  <div class="hero-tag">SS 2026 — Ignición 02</div>
+  <div class="hero-title">Enciende.<br>No pidas<br>permiso.</div>
+  <div class="hero-sub">Strike — Ropa urbana / Fuego limitado / Streetwear</div>
 </div>
 
-<div id="contenido"></div>
-
+<div class="filter-bar" id="filter-bar">
+  <button class="fbtn active" data-cat="all">Todo</button>
+  <button class="fbtn" data-cat="c">Remeras C</button>
+  <button class="fbtn" data-cat="j">Remeras J</button>
 </div>
+
+<div class="grid" id="grid"></div>
+
+<footer>STRIKE © 2026 — Streetwear local — Envíos en todo el país</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar"><i class="ti ti-x"></i></button>
+    <div class="modal-img-wrap">
+      <img class="modal-img-el" id="modal-img-el" src="" alt="" style="display:none">
+      <div class="modal-img-fallback" id="modal-img-fallback" style="display:flex">
+        <i class="ti ti-shirt-off"></i>
+        <span>Imagen no disponible</span>
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-label" id="modal-label"></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-price" id="modal-price"></div>
+      <div class="modal-rating">
+        <span class="stars">★★★★★</span>
+        <span id="modal-rating-txt"></span>
+      </div>
+      <div class="sec-label">Color</div>
+      <div class="color-opts" id="modal-colors"></div>
+      <div class="sec-label">Talle</div>
+      <div class="size-opts" id="modal-sizes"></div>
+      <div class="qty-row">
+        <span class="qty-lbl">Cantidad</span>
+        <button class="qty-btn" id="qty-minus">−</button>
+        <span class="qty-val" id="qty-val">1</span>
+        <button class="qty-btn" id="qty-plus">+</button>
+      </div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <button class="btn-primary" id="btn-add-cart">Agregar al carrito</button>
+      <button class="btn-secondary" id="btn-wish"><i class="ti ti-heart" style="margin-right:6px;font-size:14px;vertical-align:-2px"></i>Guardar en wishlist</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
+// ─── Configuración de productos ───────────────────────────────────────────
+// Las imágenes c1.jpg–c10.jpg y j1.jpg–j10.jpg deben estar en la misma carpeta que index.html
+// Extensiones que se intentarán en orden
+const EXTS = ['jpg','jpeg','png','webp'];
 
-const preguntas = [
-{texto:"Paraguay debería aumentar impuestos a los sectores con mayores ingresos.",dir:-1},
-{texto:"Mantener impuestos bajos es clave para atraer inversión y empleo.",dir:1},
-{texto:"El Estado debe intervenir activamente para reducir desigualdad.",dir:-1},
-{texto:"El crecimiento económico debe priorizarse antes que la redistribución.",dir:1},
-{texto:"Grandes productores agrícolas deberían aportar más al Estado.",dir:-1},
-{texto:"El mercado debería definir precios y salarios con mínima intervención estatal.",dir:1},
-{texto:"Los subsidios sociales son necesarios para equilibrar desigualdades.",dir:-1},
-{texto:"Las empresas deben tener libertad para operar con mínima regulación económica.",dir:1},
-{texto:"El Estado debería expandir su rol en servicios públicos.",dir:-1},
-{texto:"El problema es la mala gestión del Estado.",dir:-1},
-{texto:"Es mejor un Estado más pequeño.",dir:1},
-{texto:"Servicios públicos deberían privatizarse.",dir:1},
-{texto:"El Estado debe regular sectores estratégicos.",dir:-1},
-{texto:"Las alianzas público-privadas son mejores.",dir:1},
-{texto:"La descentralización mejora la gestión.",dir:1},
-{texto:"Empresas estatales son necesarias.",dir:-1},
-{texto:"El Estado debe controlar tierras.",dir:-1},
-{texto:"Reducir burocracia es clave.",dir:1},
-{texto:"La reforma agraria sigue siendo necesaria.",dir:-1},
-{texto:"La propiedad privada debe protegerse.",dir:1},
-{texto:"El Estado debe controlar la deforestación.",dir:-1},
-{texto:"El agronegocio no debe limitarse.",dir:1},
-{texto:"Indígenas deben tener prioridad.",dir:-1},
-{texto:"Industrialización con apoyo estatal.",dir:-1},
-{texto:"Inversión extranjera libre.",dir:1},
-{texto:"El clientelismo es el problema.",dir:0},
-{texto:"Se necesita reforma judicial.",dir:-1},
-{texto:"El orden institucional es prioridad.",dir:-1},
-{texto:"Más participación ciudadana.",dir:1},
-{texto:"Financiamiento político regulado.",dir:-1},
-{texto:"ONGs deben operar libremente.",dir:1},
-{texto:"Educación sexual en escuelas.",dir:1},
-{texto:"Familias deciden educación moral.",dir:-1},
-{texto:"Estado más laico.",dir:1},
-{texto:"Religión en vida pública.",dir:-1},
-{texto:"Diversidad debe protegerse.",dir:1},
-{texto:"Tradiciones deben preservarse.",dir:-1},
-{texto:"Rol tradicional de familia.",dir:-1},
-{texto:"Penas más duras.",dir:-1},
-{texto:"Políticas sociales contra inseguridad.",dir:-1}
+// Datos base de productos – el código los genera automáticamente para c1..c10 y j1..j10
+const COLORS_C = [
+  ['#111','#e8e8e8','#c0392b'],
+  ['#fff','#2c2c2c'],
+  ['#1a1a2e','#e8ff00','#888'],
+  ['#2d5016','#111'],
+  ['#c0392b','#fff'],
+  ['#4a4a4a','#e8ff00'],
+  ['#111','#D3D3D3','#f59e0b'],
+  ['#3d2b1f','#fff'],
+  ['#1a1a2e','#c0392b'],
+  ['#fff','#111','#2d5016'],
+];
+const COLORS_J = [
+  ['#111','#fff'],
+  ['#2c2c2c','#e8ff00'],
+  ['#c0392b','#111'],
+  ['#1a1a2e','#888'],
+  ['#fff','#4a4a4a'],
+  ['#2d5016','#fff','#111'],
+  ['#111','#D3D3D3'],
+  ['#f59e0b','#111'],
+  ['#c0392b','#1a1a2e'],
+  ['#e8ff00','#111'],
+];
+const SIZES = ['XS','S','M','L','XL','XXL'];
+const DESCS = [
+  'Remera oversize 100% algodón pesado 280g/m². Fit holgado, cuello redondo reforzado. Drop cut en la espalda. Serigrafía plastisol frontal.',
+  'Remera premium con print tipográfico. Algodón ring-spun 220g. Fit semi-oversize. Doble costura en mangas y bajo.',
+  'Corte boxy con under-stitch lateral. Algodón combed 260g. Estampado de alta densidad en espalda. Talle único streetwear.',
+  'Remera long-line de algodón pesado. Bajo asimétrico, costuras expuestas. Print monocromático al pecho.',
+  'Tee técnica con tela mesh en insertos. Estampado serigráfico en relieve. Corte atlético, fit moderno.',
 ];
 
-const respuestas = [
-{texto:"Muy en desacuerdo", valor:-2},
-{texto:"En desacuerdo", valor:-1},
-{texto:"Neutral / depende", valor:0},
-{texto:"De acuerdo", valor:1},
-{texto:"Muy de acuerdo", valor:2}
-];
-
-let actual = 0;
-let total = 0;
-
-function mostrarPregunta() {
-    let p = preguntas[actual];
-
-    document.getElementById("barra").style.width =
-        ((actual / preguntas.length) * 100) + "%";
-
-    let html = `<div class="pregunta">${actual+1}. ${p.texto}</div>`;
-
-    respuestas.forEach(r => {
-        html += `<div class="opcion" onclick="responder(${r.valor})">${r.texto}</div>`;
+function buildProducts(){
+  const list = [];
+  for(let i=1;i<=10;i++){
+    list.push({
+      id:`c${i}`,
+      cat:'c',
+      file:`c${i}`,
+      name:`Tee C-${String(i).padStart(2,'0')}`,
+      brand:'STRIKE — SERIE C',
+      price: 16000 + (i*500),
+      oldPrice: i%3===0 ? 22000 : null,
+      colors: COLORS_C[i-1],
+      sizes: SIZES.slice(0, Math.min(4+Math.floor(i/3),6)),
+      badge: i<=3 ? 'new' : (i===7||i===10 ? 'ltd' : null),
+      desc: DESCS[(i-1)%DESCS.length],
     });
-
-    document.getElementById("contenido").innerHTML = html;
+  }
+  for(let i=1;i<=10;i++){
+    list.push({
+      id:`j${i}`,
+      cat:'j',
+      file:`j${i}`,
+      name:`Tee J-${String(i).padStart(2,'0')}`,
+      brand:'STRIKE — SERIE J',
+      price: 17500 + (i*500),
+      oldPrice: i%4===0 ? 24000 : null,
+      colors: COLORS_J[i-1],
+      sizes: SIZES.slice(1, Math.min(4+Math.floor(i/3),6)),
+      badge: i<=2 ? 'new' : (i===8 ? 'ltd' : null),
+      desc: DESCS[(i+2)%DESCS.length],
+    });
+  }
+  return list;
 }
 
-function responder(valor) {
-    total += valor * preguntas[actual].dir;
-    actual++;
+const products = buildProducts();
+let cartCount = 0;
+let qty = 1;
+let selectedSize = null;
+let currentProduct = null;
 
-    if (actual < preguntas.length) {
-        mostrarPregunta();
-    } else {
-        animarResultado();
+// ─── Carga de imagen con fallback de extensión ────────────────────────────
+function tryLoadImage(baseName, imgEl, fallbackEl, onSuccess){
+  let extIdx = 0;
+  function tryNext(){
+    if(extIdx >= EXTS.length){
+      imgEl.style.display='none';
+      fallbackEl.style.display='flex';
+      return;
     }
+    const src = `${baseName}.${EXTS[extIdx++]}`;
+    imgEl.onload = ()=>{
+      imgEl.style.display='block';
+      fallbackEl.style.display='none';
+      if(onSuccess) onSuccess(src);
+    };
+    imgEl.onerror = tryNext;
+    imgEl.src = src;
+  }
+  tryNext();
 }
 
-// 🎰 animación tipo ruleta
-function animarResultado() {
-
-    let imagenes = [
-        "izquierda1.png","izquierda2.png","izquierda3.png",
-        "0centro.png",
-        "derecha1.png","derecha2.png","derecha3.png"
-    ];
-
-    let i = 0;
-
-    document.getElementById("contenido").innerHTML = `
-        <div class="resultado">
-            <h2>Calculando resultado...</h2>
-            <img id="imgResultado" src="0centro.png">
+// ─── Render grid ─────────────────────────────────────────────────────────
+function renderGrid(cat){
+  const grid = document.getElementById('grid');
+  grid.innerHTML='';
+  const filtered = cat==='all' ? products : products.filter(p=>p.cat===cat);
+  if(!filtered.length){
+    grid.innerHTML='<div class="no-products">No hay productos en esta categoría</div>';
+    return;
+  }
+  filtered.forEach(p=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      ${p.badge==='new'?'<div class="badge-new">New</div>':''}
+      ${p.badge==='ltd'?'<div class="badge-ltd">Limited</div>':''}
+      <div class="card-img-wrap" id="wrap-${p.id}">
+        <img class="card-img" id="img-${p.id}" src="" alt="${p.name}" style="display:none">
+        <div class="fallback" id="fb-${p.id}" style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <i class="ti ti-shirt" style="font-size:52px;color:#2a2a2a"></i>
+          <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#555">${p.file}</span>
         </div>
-    `;
-
-    let intervalo = setInterval(() => {
-        document.getElementById("imgResultado").src =
-            imagenes[Math.floor(Math.random()*imagenes.length)];
-        i++;
-    }, 100);
-
-    setTimeout(() => {
-        clearInterval(intervalo);
-        mostrarResultado();
-    }, 2000);
-}
-
-function mostrarResultado() {
-
-    let img = "";
-    let titulo = "";
-    let desc = "";
-
-    if (total <= -20) {
-        img = "izquierda3.png";
-        titulo = "Izquierda Radical";
-        desc = "Fuerte enfoque en igualdad, intervención estatal y justicia social.";
-    }
-    else if (total <= -10) {
-        img = "izquierda2.png";
-        titulo = "Izquierda Moderada";
-        desc = "Apoyo a políticas sociales con equilibrio económico.";
-    }
-    else if (total < 0) {
-        img = "izquierda1.png";
-        titulo = "Centro-Izquierda";
-        desc = "Tendencia social con apertura al mercado.";
-    }
-    else if (total == 0) {
-        img = "0centro.png";
-        titulo = "Centro";
-        desc = "Equilibrio entre Estado y mercado.";
-    }
-    else if (total < 10) {
-        img = "derecha1.png";
-        titulo = "Centro-Derecha";
-        desc = "Prioridad al mercado con cierta regulación.";
-    }
-    else if (total < 20) {
-        img = "derecha2.png";
-        titulo = "Derecha Moderada";
-        desc = "Énfasis en libre mercado y menor intervención estatal.";
-    }
-    else {
-        img = "derecha3.png";
-        titulo = "Derecha Radical";
-        desc = "Máxima libertad económica y Estado mínimo.";
-    }
-
-    document.getElementById("contenido").innerHTML = `
-        <div class="resultado">
-            <h2>${titulo}</h2>
-            <p>${desc}</p>
-            <img src="${img}">
-            <p>Puntaje: ${total}</p>
+        <div class="card-overlay">
+          <button class="quick-view" data-id="${p.id}">Ver detalle →</button>
         </div>
+      </div>
+      <div class="card-info">
+        <div class="card-brand">${p.brand}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-price">$${p.price.toLocaleString('es-AR')}${p.oldPrice?`<s>$${p.oldPrice.toLocaleString('es-AR')}</s>`:''}</div>
+      </div>
     `;
+    card.addEventListener('click',(e)=>{
+      if(!e.target.classList.contains('quick-view')) openModal(p.id);
+    });
+    card.querySelector('.quick-view').addEventListener('click',(e)=>{
+      e.stopPropagation();openModal(p.id);
+    });
+    grid.appendChild(card);
 
-    document.getElementById("barra").style.width = "100%";
+    // Intentar cargar imagen
+    const imgEl = document.getElementById(`img-${p.id}`);
+    const fbEl = document.getElementById(`fb-${p.id}`);
+    tryLoadImage(p.file, imgEl, fbEl, null);
+  });
 }
 
-mostrarPregunta();
+// ─── Modal ────────────────────────────────────────────────────────────────
+function openModal(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  currentProduct = p;
+  qty=1; selectedSize=null;
 
+  document.getElementById('modal-label').textContent=`${p.brand}`;
+  document.getElementById('modal-name').textContent=p.name;
+  document.getElementById('modal-price').innerHTML=`$${p.price.toLocaleString('es-AR')}${p.oldPrice?` <s>$${p.oldPrice.toLocaleString('es-AR')}</s>`:''}`;
+  document.getElementById('modal-rating-txt').textContent=`4.${7+Math.floor(Math.random()*3)} (${20+Math.floor(Math.random()*80)} reseñas)`;
+  document.getElementById('modal-desc').textContent=p.desc;
+  document.getElementById('qty-val').textContent='1';
+
+  // Imagen modal
+  const mImg = document.getElementById('modal-img-el');
+  const mFb = document.getElementById('modal-img-fallback');
+  mImg.style.display='none';
+  mFb.style.display='flex';
+  tryLoadImage(p.file, mImg, mFb, null);
+
+  // Colores
+  const colEl=document.getElementById('modal-colors');
+  colEl.innerHTML='';
+  p.colors.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='cdot'+(i===0?' sel':'');
+    d.style.background=c;
+    if(c==='#fff'||c==="#e8e8e8") d.style.boxShadow='inset 0 0 0 1px #333';
+    d.addEventListener('click',()=>{
+      colEl.querySelectorAll('.cdot').forEach(x=>x.classList.remove('sel'));
+      d.classList.add('sel');
+    });
+    colEl.appendChild(d);
+  });
+
+  // Talles
+  const szEl=document.getElementById('modal-sizes');
+  szEl.innerHTML='';
+  p.sizes.forEach(s=>{
+    const btn=document.createElement('button');
+    btn.className='sbtn';btn.textContent=s;
+    btn.addEventListener('click',()=>{
+      szEl.querySelectorAll('.sbtn').forEach(x=>x.classList.remove('sel'));
+      btn.classList.add('sel');selectedSize=s;
+    });
+    szEl.appendChild(btn);
+  });
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-overlay').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.getElementById('modal-close').addEventListener('click',closeModal);
+document.getElementById('modal-overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modal-overlay')) closeModal();
+});
+
+document.getElementById('qty-minus').addEventListener('click',()=>{
+  if(qty>1){qty--;document.getElementById('qty-val').textContent=qty;}
+});
+document.getElementById('qty-plus').addEventListener('click',()=>{
+  qty++;document.getElementById('qty-val').textContent=qty;
+});
+
+document.getElementById('btn-add-cart').addEventListener('click',()=>{
+  if(!selectedSize){showToast('Elegí un talle primero');return;}
+  cartCount+=qty;
+  document.getElementById('cart-count').textContent=cartCount;
+  closeModal();
+  showToast(`✓ ${qty} item${qty>1?'s':''} agregado${qty>1?'s':''} al carrito`);
+});
+
+document.getElementById('btn-wish').addEventListener('click',()=>{
+  showToast('Guardado en wishlist');
+});
+
+// ─── Filtros ──────────────────────────────────────────────────────────────
+document.getElementById('filter-bar').querySelectorAll('.fbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid(btn.dataset.cat);
+  });
+});
+
+// ─── Toast ────────────────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._to);
+  t._to=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ─── ESC para cerrar modal ────────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeModal();
+});
+
+// ─── Init ─────────────────────────────────────────────────────────────────
+renderGrid('all');
 </script>
-
 </body>
 </html>
