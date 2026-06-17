@@ -442,17 +442,23 @@ input[readonly]{background:var(--muted-bg); color:#7a7460; font-family:var(--mon
   var confirmDeleteId = null;
   var pedidosFilterPreset = null;
 
-  /* ---------- storage ---------- */
+  /* ---------- storage (localStorage del navegador, funciona offline y fuera de Claude) ---------- */
   function loadState(){
-    return window.storage.get(STORAGE_KEY, false).then(function(res){
-      if(res && res.value){ return JSON.parse(res.value); }
-      return null;
-    }).catch(function(){ return null; });
+    try{
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      return Promise.resolve(raw ? JSON.parse(raw) : null);
+    }catch(e){
+      return Promise.resolve(null);
+    }
   }
   function saveState(){
-    return window.storage.set(STORAGE_KEY, JSON.stringify(state), false).catch(function(){
-      showToast('No se pudo guardar. Revisá tu conexión.', 'bad');
-    });
+    try{
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      return Promise.resolve();
+    }catch(e){
+      showToast('No se pudo guardar en este navegador.', 'bad');
+      return Promise.resolve();
+    }
   }
 
   /* ---------- helpers ---------- */
